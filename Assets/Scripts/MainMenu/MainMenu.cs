@@ -7,6 +7,16 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     private GameObject lastScelect;
+    public GameObject[] allUIPages;
+    private void Awake()
+    {
+        //讀取所有UI
+        allUIPages = GameObject.FindGameObjectsWithTag("UIPages");
+        foreach(GameObject page in allUIPages) 
+        {
+            page.SetActive(false);
+        }
+    }
 
     private void Start()
     {
@@ -15,6 +25,7 @@ public class MainMenu : MonoBehaviour
 
     private void Update()
     {
+        //記憶最後選擇的按鈕
         if(EventSystem.current.currentSelectedGameObject == null) 
         {
             EventSystem.current.SetSelectedGameObject(lastScelect);
@@ -27,7 +38,8 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame() 
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SetUIPages("SaveUI");
     }
 
     public void QuitGame() 
@@ -37,6 +49,28 @@ public class MainMenu : MonoBehaviour
 
     public void UIEnable() 
     {
-        GameObject.Find("Canvas/MainMenu/UI").SetActive(true);
+        SetUIPages("MainUI");
+    }
+
+    public void PlayGameBack()
+    {
+        SetUIPages("MainUI");
+    }
+
+    //設定當前使用的UI
+    private void SetUIPages(string pageName) 
+    {
+        foreach(GameObject page in allUIPages) 
+        {
+            if(pageName == page.name) 
+            {
+                page.SetActive(true);
+            }
+            else 
+            {
+                page.SetActive(false); 
+            }
+        }
+        EventSystem.current.SetSelectedGameObject(GameObject.FindGameObjectWithTag("UIPagesFirstButton"));
     }
 }
