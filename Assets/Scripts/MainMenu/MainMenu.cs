@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     private GameObject lastScelect;
-    public GameObject[] allUIPages;
+    private GameObject[] allUIPages;
     private void Awake()
     {
         //Åª¨ú©Ò¦³UI

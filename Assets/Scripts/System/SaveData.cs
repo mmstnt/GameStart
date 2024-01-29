@@ -8,9 +8,20 @@ public class SaveData : MonoBehaviour
 {
     [SerializeField]
     PlayerData data;
-
-    private void Update()
+    public int count;
+    private string path;
+    private void OnEnable()
     {
+        SaveUI.saveCount++;
+        count = SaveUI.saveCount;
+        path = Application.dataPath + (count > 9 ? "/Save/Save" : "/Save/Save0") + count.ToString() + ".sv";
+        BinaryFormatter bf = new BinaryFormatter();
+        if (File.Exists(path)) 
+        {
+            Stream s = File.Open(path, FileMode.Open);
+            data = (PlayerData)bf.Deserialize(s);
+            s.Close();
+        }
     }
 
     public void Save() 
