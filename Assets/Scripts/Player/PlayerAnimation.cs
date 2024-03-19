@@ -29,5 +29,7 @@ public class PlayerAnimation : MonoBehaviour
         ani.SetFloat("velocityY", rd.velocity.y);
         ani.SetBool("isGround", physicsCheck.isGround);
         ani.SetBool("isAttack", playerController.atk01.active);
+        ani.SetBool("isFall",ani.GetCurrentAnimatorStateInfo(0).IsName("PlayerFall"));
     }
+
 }
