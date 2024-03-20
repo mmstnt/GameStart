@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     [Header("把计")]
     public float speed;
     public float jumpForce;
+    public float hurtForce;
+    public bool isHurt;
     [Header("ン")]
     public GameObject atk01;
     //╬把计
@@ -27,7 +29,7 @@ public class PlayerController : MonoBehaviour
         physicsCheck = GetComponent<PhysicsCheck>();
         //龄砞竚
         inputControl = new PlayerInputControl();
-        inputControl.GamePlay.Move.started += moveAttackInterrupt;
+        inputControl.GamePlay.Move.started += AttackInterrupt;
         inputControl.GamePlay.Jump.started += jump;
         inputControl.GamePlay.Attack.started += attack;
         //莉ン
@@ -49,7 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         inputDirection = inputControl.GamePlay.Move.ReadValue<Vector2>();
         atk = atk01.active;
-        action = atk;
+        action = atk || isHurt;
         if (atk && physicsCheck.isGround)
             rd.velocity = new Vector2(0, rd.velocity.y);
     }
@@ -82,10 +84,18 @@ public class PlayerController : MonoBehaviour
         atk01.SetActive(true);
     }
 
-    private void moveAttackInterrupt(InputAction.CallbackContext obj)
+    private void AttackInterrupt(InputAction.CallbackContext obj)
     {
         if(!atk)
             return;
         atk01.SetActive(false);
+    }
+
+    public void getHurt(Transform attacker) 
+    {
+        isHurt = true;
+        rd.velocity = Vector3.zero;
+        Vector2 dirForce = new Vector2(transform.position.x - attacker.position.x,0).normalized;
+        rd.AddForce(dirForce * hurtForce, ForceMode2D.Impulse);
     }
 }

@@ -16,7 +16,7 @@ TagManager:
   - Ground
   - Player
   - PlayerAtk
-  - 
+  - Monster
   - 
   - 
   - 
@@ -40,9 +40,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Background02
     uniqueID: 3142600715
     locked: 0
@@ -57,4 +54,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 767316001
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0

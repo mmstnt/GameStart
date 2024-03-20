@@ -32,4 +32,9 @@ public class PlayerAnimation : MonoBehaviour
         ani.SetBool("isFall",ani.GetCurrentAnimatorStateInfo(0).IsName("PlayerFall"));
     }
 
+    public void playerHurt() 
+    {
+        ani.SetTrigger("isHurt");
+    }
+
 }
