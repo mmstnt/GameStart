@@ -16,19 +16,17 @@ public class PlayerAnimation : MonoBehaviour
         playerController = transform.parent.gameObject.GetComponent<PlayerController>();
     }
 
-    [System.Obsolete]
     private void Update()
     {
         setAnimation();
     }
 
-    [System.Obsolete]
     private void setAnimation() 
     {
         ani.SetFloat("velocityX", Mathf.Abs(rd.velocity.x));
         ani.SetFloat("velocityY", rd.velocity.y);
         ani.SetBool("isGround", physicsCheck.isGround);
-        ani.SetBool("isAttack", playerController.atk01.active);
+        ani.SetBool("isAttack", playerController.isAttack);
         ani.SetBool("isFall",ani.GetCurrentAnimatorStateInfo(0).IsName("PlayerFall"));
     }
 
@@ -37,4 +35,8 @@ public class PlayerAnimation : MonoBehaviour
         ani.SetTrigger("isHurt");
     }
 
+    public void playerInterrupt() 
+    {
+        ani.SetTrigger("isInterrupt");
+    }
 }

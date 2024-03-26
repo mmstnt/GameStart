@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEditor.Events;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,31 +11,31 @@ public class PlayerController : MonoBehaviour
     private Vector2 inputDirection;
     private Rigidbody2D rd;
     private PhysicsCheck physicsCheck;
+    private Animator ani;
     [Header("把计")]
     public float speed;
     public float jumpForce;
     public float hurtForce;
     public bool isHurt;
-    [Header("ン")]
-    public GameObject atk01;
+    public bool isAttack;
+    public bool isFall;
+    public UnityEvent playerInterrupt;
     //╬把计
     private int faceDir;
     private bool action;
-    private bool atk;
 
-    [System.Obsolete]
     private void Awake()
     {
         //莉じン
         rd = GetComponent<Rigidbody2D>();
         physicsCheck = GetComponent<PhysicsCheck>();
+        ani = transform.Find("Ani").GetComponent<Animator>();
         //龄砞竚
         inputControl = new PlayerInputControl();
         inputControl.GamePlay.Move.started += AttackInterrupt;
         inputControl.GamePlay.Jump.started += jump;
         inputControl.GamePlay.Attack.started += attack;
         //莉ン
-        atk01 = transform.Find("Atk01").gameObject;
     }
 
     private void OnEnable()
@@ -46,14 +48,11 @@ public class PlayerController : MonoBehaviour
         inputControl.Disable();
     }
 
-    [System.Obsolete]
     private void Update()
     {
         inputDirection = inputControl.GamePlay.Move.ReadValue<Vector2>();
-        atk = atk01.active;
-        action = atk || isHurt;
-        if (atk && physicsCheck.isGround)
-            rd.velocity = new Vector2(0, rd.velocity.y);
+        isFall = ani.GetCurrentAnimatorStateInfo(0).IsName("PlayerFall");
+        action = isAttack || isHurt || isFall;
     }
 
     private void FixedUpdate()
@@ -76,19 +75,19 @@ public class PlayerController : MonoBehaviour
             rd.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
     }
 
-    [System.Obsolete]
     private void attack(InputAction.CallbackContext obj)
     {
-        if (atk)
+        if (isAttack)
             return;
-        atk01.SetActive(true);
+        isAttack = true;
     }
 
     private void AttackInterrupt(InputAction.CallbackContext obj)
     {
-        if(!atk)
+        if(!isAttack)
             return;
-        atk01.SetActive(false);
+        isAttack = false;
+        playerInterrupt?.Invoke();
     }
 
     public void getHurt(Transform attacker) 

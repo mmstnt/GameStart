@@ -8,10 +8,13 @@ public class PhysicsCheck : MonoBehaviour
     public Vector2 bottomOffset;
     public float checkRaduis;
     public LayerMask groundLayer;
+    public PhysicsMaterial2D normal;
+    public PhysicsMaterial2D wall;
 
     private void Update() 
     {
         checkGround();
+        checkState();
     }
 
     private void checkGround() 
@@ -23,5 +26,10 @@ public class PhysicsCheck : MonoBehaviour
     {
         //繪製地面碰撞點
         Gizmos.DrawWireSphere((Vector2)transform.position + bottomOffset, checkRaduis);
+    }
+
+    private void checkState() 
+    {
+        GetComponent<CapsuleCollider2D>().sharedMaterial = isGround ? normal : wall;
     }
 }
