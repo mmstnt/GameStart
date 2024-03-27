@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
         ani = transform.Find("Ani").GetComponent<Animator>();
         //按鍵功能設置
         inputControl = new PlayerInputControl();
-        inputControl.GamePlay.Move.started += AttackInterrupt;
+        inputControl.GamePlay.Move.started += attackInterrupt;
         inputControl.GamePlay.Jump.started += jump;
         inputControl.GamePlay.Attack.started += attack;
         //獲取子物件
@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
         isAttack = true;
     }
 
-    private void AttackInterrupt(InputAction.CallbackContext obj)
+    private void attackInterrupt(InputAction.CallbackContext obj)
     {
         if(!isAttack)
             return;
